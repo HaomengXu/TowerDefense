@@ -1,0 +1,43 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/map.jpg</file>
+        <file>image/virus1.png</file>
+        <file>image/injection.png</file>
+        <file>image/life.png</file>
+        <file>image/injection2.png</file>
+        <file>image/injection3.png</file>
+        <file>image/facemask.png</file>
+        <file>image/facemask2.png</file>
+        <file>image/facemask3.png</file>
+        <file>image/mask-bullet.png</file>
+        <file>image/virus2.png</file>
+        <file>image/doctor.png</file>
+        <file>image/doctor2.png</file>
+        <file>image/doctor3.png</file>
+        <file>image/LevelUp.png</file>
+        <file>image/LevelUp2.png</file>
+        <file>image/virus2-1.png</file>
+        <file>image/virus2-2.png</file>
+        <file>image/Light.png</file>
+        <file>image/virus3.png</file>
+        <file>image/virus4.png</file>
+        <file>image/map2.jpg</file>
+        <file>image/lose.jpeg</file>
+        <file>image/win.jpg</file>
+    </qresource>
+    <qresource prefix="/music">
+        <file>sound/ToTheRescue.mp3</file>
+        <file>sound/appear.mp3</file>
+        <file>sound/attack1.mp3</file>
+        <file>sound/attack2.mp3</file>
+        <file>sound/attack3.mp3</file>
+        <file>sound/Crash.mp3</file>
+        <file>sound/die1.mp3</file>
+        <file>sound/die2.mp3</file>
+        <file>sound/die3.mp3</file>
+        <file>sound/die4.mp3</file>
+        <file>sound/levelUP.mp3</file>
+        <file>sound/setTower.mp3</file>
+        <file>sound/delete.mp3</file>
+    </qresource>
+</RCC>
