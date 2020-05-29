@@ -13,7 +13,7 @@ public:
                                      if(whichmap==1){coor.setX(70);coor.setY(140);}
                                      else{coor.setX(0);coor.setY(280);}//坐标初始化
                                     }
-    ~Enemy(){/*QMessageBox::information(NULL,"~Enemy","die");*/}
+    virtual ~Enemy(){/*QMessageBox::information(NULL,"~Enemy","die");*/}
     Enemy(const Enemy &e):fullHP(100),normspeed(1){
         HP=e.HP;fullHP=e.fullHP;
         speed=e.speed;normspeed=e.normspeed;

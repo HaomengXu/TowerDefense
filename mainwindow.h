@@ -22,12 +22,15 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+signals:
+    void sendsignal();//返回主界面信号
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 protected slots:
-    void moveArmy();
+    void moveArmy();//时间槽函数
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -61,5 +64,6 @@ private:
     int wavenum=0;//第几波r敌人
     Map map;//地图1
     Map2 map2;//地图2
+    bool over=0;
 };
 #endif // MAINWINDOW_H

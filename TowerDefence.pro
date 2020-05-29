@@ -1,3 +1,4 @@
+RC_ICONS=lung.ico
 QT       += core gui
 QT       += multimedia
 
@@ -17,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dialog.cpp \
     enemy.cpp \
     enemy2.cpp \
     enemy4.cpp \
@@ -29,6 +31,7 @@ SOURCES += \
     tower3.cpp
 
 HEADERS += \
+    dialog.h \
     enemy.h \
     enemy2.h \
     enemy3.h \
@@ -42,6 +45,7 @@ HEADERS += \
     tower3.h
 
 FORMS += \
+    dialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

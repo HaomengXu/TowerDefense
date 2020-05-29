@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->width(),this->height());
     this->_x = this->_y = -1;
     QMediaPlayer * player = new QMediaPlayer;//全部音效加载
     player->setMedia(QUrl("qrc:/music/sound/ToTheRescue.mp3"));
@@ -56,8 +57,8 @@ void MainWindow::paintEvent(QPaintEvent *){
     QPainter painter(this);
     QBrush brush(QColor(255, 255, 255), Qt::Dense2Pattern);
 
-    if(enemy[0].getLife()<=0)gameOver(painter);//失败
-    else if(enemy[0].getMap()==2&&wavenum==3)gameWin(painter);//赢
+    if(enemy[0].getLife()<=0){gameOver(painter);over=1;}//失败
+    else if(enemy[0].getMap()==2&&wavenum==3){gameWin(painter);over=1;}//赢
     else{
         if(enemy[0].getMap()==1)painter.drawPixmap(rect(), QPixmap("://image/map.jpg"));
         else painter.drawPixmap(rect(), QPixmap("://image/map2.jpg"));
@@ -141,12 +142,13 @@ void MainWindow::paintEvent(QPaintEvent *){
         ui->label->setText(QString::number(coins));//金币数
         //+" ; "+QString::number(this->_x)+" , "+QString::number(this->_y)
         ui->label_2->setText("  "+QString::number(enemy[0].getLife()));//生命数
-        ui->label_3->setText("第 "+QString::number(wavenum+1)+" / 3 波");//敌人波数
+        ui->label_3->setText("第 "+QString::number(wavenum+1)+" / 3 波病毒");//敌人波数
     }
     //for(int i=0;i<15;i++){painter.drawLine(70*i,0,70*i,700);painter.drawLine(0,70*i,1000,70*i);}
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
+    if(over){emit sendsignal();this->close();}
     int x = event->x(),y = event->y();
     int mx=floor((double)x/70)*70,my=floor((double)y/70)*70;//格点取整操作
     //已建塔的维护

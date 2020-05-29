@@ -26,12 +26,12 @@ void Enemy2::show(QPainter & painter){
         painter.drawRect(x+1,y-9,50,2);
         painter.setPen(QPen(Qt::red,3));
         painter.drawRect(x+1,y-9,HP*50/fullHP,2);
-        if(timeline<=30){//出现时炫光+渐变效果
+        if(timeline<=50){//出现时炫光+渐变效果
             painter.save();
             if(whichmap==1)painter.translate(map.translate(0).getX()+35,map.translate(0).getY()+25);
             else painter.translate(map2.translate(0).getX()+35,map2.translate(0).getY()+25);
             painter.rotate(timeline*10);
-            painter.setOpacity(1-timeline*0.02);
+            painter.setOpacity(1-timeline*0.01);
             painter.drawImage(-40, -40, light);
             painter.restore();
         }

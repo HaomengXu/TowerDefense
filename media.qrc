@@ -24,6 +24,7 @@
         <file>image/map2.jpg</file>
         <file>image/lose.jpeg</file>
         <file>image/win.jpg</file>
+        <file>image/ui.jpg</file>
     </qresource>
     <qresource prefix="/music">
         <file>sound/ToTheRescue.mp3</file>

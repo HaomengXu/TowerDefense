@@ -5,7 +5,7 @@
 class Tower{
 public:
     Tower(){}
-    ~Tower(){}
+    virtual ~Tower(){}
     Tower(const Tower& t){
         level=t.level;
         money=t.money;
