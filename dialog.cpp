@@ -88,19 +88,19 @@ void Dialog::paintEvent(QPaintEvent *){
                 it++;}
         }
         for(auto it=enemy2.begin();it!=enemy2.end();){
-            if(it->getAct()==0){enemy2.erase(it);virusnum[1]--;time0-=50;}
+            if(it->getAct()==0){enemy2.erase(it);virusnum[1]--;time0-=100;}
             else {it->show(painter);
                 if(it->getAct()==0)crash.play();
                 it++;}
         }
         for(auto it=enemy3.begin();it!=enemy3.end();){
-            if(it->getAct()==0){enemy3.erase(it);virusnum[2]--;time0-=100;}
+            if(it->getAct()==0){enemy3.erase(it);virusnum[2]--;time0-=150;}
             else {it->show(painter);
                 if(it->getAct()==0)crash.play();
                 it++;}
         }
         for(auto it=enemy4.begin();it!=enemy4.end();){
-            if(it->getAct()==0){enemy4.erase(it);virusnum[3]--;time0-=200;}
+            if(it->getAct()==0){enemy4.erase(it);virusnum[3]--;time0-=250;}
             else {it->show(painter);
                 if(it->getAct()==0)crash.play();
                 it++;}
@@ -292,19 +292,19 @@ void Dialog::moveArmy()
         appear.play();
     }
     sort(enemy.begin(),enemy.end(),comp);//位置排序，明确先攻击谁
-    if(enemy2.count()<virusnum[1]&&time0>=100*enemy2.count()+50*virusnum[0]+500){
+    if(enemy2.count()<virusnum[1]&&time0>=100*enemy2.count()+50*(virusnum[0]-2)+500){
         Enemy2 e2;
         enemy2.push_back(e2);
         appear.play();
     }
     sort(enemy2.begin(),enemy2.end(),comp);
-    if(enemy3.count()<virusnum[2]&&time0>=150*enemy3.count()+50*virusnum[0]+100*virusnum[1]+500){
+    if(enemy3.count()<virusnum[2]&&time0>=150*enemy3.count()+50*(virusnum[0]-2)+100*(virusnum[1]-1)+500){
         Enemy3 e3;
         enemy3.push_back(e3);
         appear.play();
     }
     sort(enemy3.begin(),enemy3.end(),comp);
-    if(enemy4.count()<virusnum[3]&&time0>=500+250*enemy4.count()+50*virusnum[0]+100*virusnum[1]+150*virusnum[2]+500){
+    if(enemy4.count()<virusnum[3]&&time0>=500+250*enemy4.count()+50*(virusnum[0]-2)+100*(virusnum[1]-1)+150*virusnum[2]+500){
         Enemy4 e4;
         enemy4.push_back(e4);
         appear.play();
