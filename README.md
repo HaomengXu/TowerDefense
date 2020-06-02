@@ -1,4 +1,4 @@
-# TowerDefense
+# TowerDefence-ResistanceToDisease
 一个以“抗击新冠疫情”为主题的抗疫塔防游戏(made by Qt)
 
 
