@@ -31,7 +31,7 @@ int Tower2::Attack(Point viruscoor){
     return 0;
 }
 
-bool Tower2::reSpeed(Point viruscoor){//恢复速度
+bool Tower2::reSpeedjud(Point viruscoor){//恢复速度
     if(coor.dis(viruscoor)<=range+1)return 1;//判断是否刚刚离开射程
     return 0;
 }

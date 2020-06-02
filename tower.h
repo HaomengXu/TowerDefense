@@ -21,19 +21,19 @@ public:
     int Attack(const Point);
 
     int getLevel() const{return level;}
-    void setLevel(const int l){level=l;range+=70;attack+=20;money+=80;interval-=10;}
+    void LevelUp(){level++;range+=60;attack+=20;money+=80;interval-=10;}
     int getMoney() const{return money;}
     int getAttack() const{return attack;}
 
     Point getCoor() const{return coor;}
     void setCoor(const Point &c){coor=c;}
-    void resetPoint(){bullet.setX(0);bullet.setY(0);timerID=5;}//重置子弹
+    void resetPoint(){bullet.setX(-1);bullet.setY(-1);timerID=5;}//重置子弹
 
 protected:
     int level=0;
     int money=100;
 
-    int range=150-70;
+    int range=150-60;
     int attack=60-20;
 
     int timerID=5;//时间线

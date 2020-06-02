@@ -26,6 +26,7 @@ SOURCES += \
     mainwindow.cpp \
     map.cpp \
     map2.cpp \
+    stone.cpp \
     tower.cpp \
     tower2.cpp \
     tower3.cpp
@@ -40,6 +41,7 @@ HEADERS += \
     map.h \
     map2.h \
     point.h \
+    stone.h \
     tower.h \
     tower2.h \
     tower3.h

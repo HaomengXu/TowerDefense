@@ -7,7 +7,6 @@ void Tower::show(QPainter & painter){//三个等级图片的加载
     else if(level==2)tower.load("://image/injection2.png");
     else tower.load("://image/injection3.png");
     //旋转角度的判断
-    painter.save();
     double direct_x=35+coor.getX()-bullet.getX(),direct_y=35+coor.getY()-bullet.getY();
     if(bullet.getX()>0){
         if(abs(direct_x)>abs(direct_y)){
@@ -18,6 +17,7 @@ void Tower::show(QPainter & painter){//三个等级图片的加载
             if(direct_y<0)theta+=180;
         }
     }
+    painter.save();
     painter.translate(35+coor.getX(),35+coor.getY());
     painter.rotate(theta-135);
     painter.drawImage(-35,-35, tower);
@@ -33,12 +33,12 @@ void Tower::show(QPainter & painter){//三个等级图片的加载
 
 int Tower::Attack(const Point viruscoor){
     if(coor.dis(viruscoor)<=range){//射程内判断
-        if(timerID>=interval){//子弹坐标的设定
+        if(timerID==interval){timerID++;return 1;}//发出声效
+        if(timerID>20+interval){timerID=5;bullet.setX(-1);bullet.setY(-1);return 3;}//子弹再次上膛，延时发射
+        if(timerID>=interval+2){//子弹坐标的设定
             bullet.setX(35+coor.getX()+(viruscoor.getX()-coor.getX())*(double)(timerID-interval)/20);
             bullet.setY(35+coor.getY()+(viruscoor.getY()-coor.getY())*(double)(timerID-interval)/20);
-            if((timerID++)==interval)return 1;//发出声效
         }
-        if(timerID>20+interval){timerID=5;bullet.setX(-1);bullet.setY(-1);return 3;}//子弹再次上膛，延时发射
         timerID++;return 2;//时间标志+1
     }else{bullet.setX(-1);bullet.setY(-1);}//停止攻击
     return 0;

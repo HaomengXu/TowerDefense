@@ -16,8 +16,8 @@ public:
         interval=t.interval;
     }
 
-    void setLevel(const int l){level=l;range+=20;attack+=20;money+=120;interval-=10;}//升级
-    void resetPoint(){bullet.setX(0);bullet.setY(0);timerID=30;}//重置子弹
+    void LevelUp(){level++;range+=20;attack+=20;money+=120;interval-=10;}//升级
+    void resetPoint(){bullet.setX(-1);bullet.setY(-1);timerID=30;}//重置子弹
     void show(QPainter &);
 
     int Attack(const Point);//判断是否攻击

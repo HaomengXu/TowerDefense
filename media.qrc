@@ -22,9 +22,11 @@
         <file>image/virus3.png</file>
         <file>image/virus4.png</file>
         <file>image/map2.jpg</file>
-        <file>image/lose.jpeg</file>
+        <file>image/lose.jpg</file>
         <file>image/win.jpg</file>
         <file>image/ui.jpg</file>
+        <file>image/trash.png</file>
+        <file>image/target.png</file>
     </qresource>
     <qresource prefix="/music">
         <file>sound/ToTheRescue.mp3</file>
@@ -40,5 +42,6 @@
         <file>sound/levelUP.mp3</file>
         <file>sound/setTower.mp3</file>
         <file>sound/delete.mp3</file>
+        <file>sound/trash.mp3</file>
     </qresource>
 </RCC>

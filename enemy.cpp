@@ -9,8 +9,8 @@ void Enemy::show(QPainter & painter){
     //坐标判断
     int d=timeline;
     Point p;
-    if(whichmap==1)p=map.translate(d);//行进距离转换为坐标
-    else p=map2.translate(d);
+    if(whichmap==1)p=map->translate(d);//行进距离转换为坐标
+    else p=map2->translate(d);
     int x=p.getX(),y=p.getY();
     if(x<0){if(HP>0)life--;HP=0;}//敌人侵犯成功
     //绘制敌人
@@ -27,8 +27,8 @@ void Enemy::show(QPainter & painter){
         painter.drawRect(x+1,y-9,HP*50/fullHP,2);
         if(timeline<=30){//出现时炫光+渐变效果
             painter.save();
-            if(whichmap==1)painter.translate(map.translate(0).getX()+35,map.translate(0).getY()+25);
-            else painter.translate(map2.translate(0).getX()+35,map2.translate(0).getY()+25);
+            if(whichmap==1)painter.translate(map->translate(0).getX()+35,map->translate(0).getY()+25);
+            else painter.translate(map2->translate(0).getX()+35,map2->translate(0).getY()+25);
             painter.rotate(timeline*10);
             painter.setOpacity(0.9-timeline*0.02);
             painter.drawImage(-40, -40, light);
@@ -36,5 +36,4 @@ void Enemy::show(QPainter & painter){
         }
         timeline+=speed;
     }
-
 }
