@@ -23,7 +23,7 @@ private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
     void keyPressEvent(QKeyEvent *e){
-        if(e->key()==Qt::Key_Escape)this->close();
+        if(e->key()==Qt::Key_Escape||e->key()==Qt::Key_Backspace)this->close();
         else if(e->key()==Qt::Key_Enter||e->key()==Qt::Key_Return){d->reset();d->show();this->hide();}
         else QDesktopServices::openUrl(QUrl("https://github.com/HaomengXu/TowerDefense/releases"));
     }

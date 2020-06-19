@@ -23,7 +23,7 @@ public:
         virus=e.virus;
         light=e.light;
     } 
-    void show(QPainter &);
+    void show(QPainter &,bool);
 
     void slowSpeed(const int k){if(speed>=1){//减速算法
             if(k==1)speed*=0.7;

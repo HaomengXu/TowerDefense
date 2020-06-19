@@ -41,9 +41,7 @@ protected:
     //void mouseReleaseEvent(QMouseEvent *event);
     void gameOver(QPainter &);
     void gameWin(QPainter &);
-    void keyPressEvent(QKeyEvent *){//游戏结束，任意键返回主界面
-        if(gameover){emit sendsignal();this->close();}
-    }
+    void keyPressEvent(QKeyEvent *e);
 
 private:
     Ui::Dialog *ui;
@@ -66,12 +64,16 @@ private:
 
     int time0=0;//主时间线
     int coins=500;//金币数
-    QMediaPlayer appear,attack1,attack2,attack3,die1,die2,die3,die4,setow,levelup,del,crash,trash;//音效
+    QMediaPlayer appear,attack1,attack2,attack3,die1,die2,die3,die4,
+        setow,levelup,del,crash,trash,perfect,lose,select,diselect;//音效
 
     int wavenum=0;//第几波r敌人
     Map map;//地图1
     Map2 map2;//地图2
     bool gameover=0;//判断游戏结束
+    bool stop=0;//暂停
+    bool speed=0;//是否快进
+    int piclive=enemy[0].getLife();//被攻击时的动画参数
 };
 
 #endif // DIALOG_H

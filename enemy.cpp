@@ -3,7 +3,7 @@
 int Enemy::life=10;
 int Enemy::whichmap=1;
 
-void Enemy::show(QPainter & painter){
+void Enemy::show(QPainter & painter,bool stop){
     QBrush brush(QColor(255, 255, 255), Qt::Dense1Pattern);
     painter.setPen(QPen(Qt::white,4));
     //坐标判断
@@ -30,10 +30,10 @@ void Enemy::show(QPainter & painter){
             if(whichmap==1)painter.translate(map->translate(0).getX()+35,map->translate(0).getY()+25);
             else painter.translate(map2->translate(0).getX()+35,map2->translate(0).getY()+25);
             painter.rotate(timeline*10);
-            painter.setOpacity(0.9-timeline*0.02);
+            painter.setOpacity(0.9-abs(timeline-10)*0.03);
             painter.drawImage(-40, -40, light);
             painter.restore();
         }
-        timeline+=speed;
+        if(!stop)timeline+=speed;
     }
 }

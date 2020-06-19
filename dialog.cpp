@@ -40,6 +40,14 @@ Dialog::Dialog(QWidget *parent)
     crash.setMedia(QUrl("qrc:/music/sound/Crash.mp3"));
     trash.setVolume(40);
     trash.setMedia(QUrl("qrc:/music/sound/trash.mp3"));
+    perfect.setVolume(40);
+    perfect.setMedia(QUrl("qrc:/music/sound/Perfect.mp3"));
+    lose.setVolume(40);
+    lose.setMedia(QUrl("qrc:/music/sound/Lose.mp3"));
+    select.setVolume(40);
+    select.setMedia(QUrl("qrc:/music/sound/TowerSelect.mp3"));
+    diselect.setVolume(40);
+    diselect.setMedia(QUrl("qrc:/music/sound/TowerDeselect.mp3"));
     //新建一批障碍物
     Point p(140,280);
     Stone s1(p);stone.push_back(s1);
@@ -72,7 +80,24 @@ void Dialog::paintEvent(QPaintEvent *){
     else{
         if(enemy[0].getMap()==1)painter.drawPixmap(rect(), QPixmap("://image/map.jpg"));
         else painter.drawPixmap(rect(), QPixmap("://image/map2.jpg"));
-        time0++;
+        //肺部生命加载图片变化
+        if(piclive%100!=enemy[0].getLife()){
+            towerpic.load("://image/attacklung.png");
+            painter.drawImage(677,110, towerpic);
+            piclive+=100;
+            if(piclive>3500)piclive=enemy[0].getLife();
+        }else{
+            if(enemy[0].getLife()<=8)towerpic.load("://image/lung8.png");
+            if(enemy[0].getLife()<=5)towerpic.load("://image/lung5.png");
+            if(enemy[0].getLife()<=2)towerpic.load("://image/lung2.png");
+            if(enemy[0].getLife()<=8)painter.drawImage(677,110, towerpic);
+        }
+        if(!stop){time0++;towerpic.load("://image/stop.jpg");}
+        else towerpic.load("://image/start.jpg");
+        painter.drawImage(170,5, towerpic);
+        if(!speed){towerpic.load("://image/slow.jpg");}
+        else towerpic.load("://image/fast.jpg");
+        painter.drawImage(450,3, towerpic);
         //敌人和塔
         painter.setPen(QPen(Qt::white,4));
         for(auto it=stone.begin();it!=stone.end();){
@@ -83,25 +108,25 @@ void Dialog::paintEvent(QPaintEvent *){
         }
         for(auto it=enemy.begin();it!=enemy.end();){
             if(it->getAct()==0){enemy.erase(it);virusnum[0]--;time0-=50;}//得逞的敌人清除
-            else {it->show(painter);//敌人显示
+            else {it->show(painter,stop);//敌人显示
                 if(it->getAct()==0)crash.play();//掉命预警
                 it++;}
         }
         for(auto it=enemy2.begin();it!=enemy2.end();){
             if(it->getAct()==0){enemy2.erase(it);virusnum[1]--;time0-=100;}
-            else {it->show(painter);
+            else {it->show(painter,stop);
                 if(it->getAct()==0)crash.play();
                 it++;}
         }
         for(auto it=enemy3.begin();it!=enemy3.end();){
             if(it->getAct()==0){enemy3.erase(it);virusnum[2]--;time0-=150;}
-            else {it->show(painter);
+            else {it->show(painter,stop);
                 if(it->getAct()==0)crash.play();
                 it++;}
         }
         for(auto it=enemy4.begin();it!=enemy4.end();){
             if(it->getAct()==0){enemy4.erase(it);virusnum[3]--;time0-=250;}
-            else {it->show(painter);
+            else {it->show(painter,stop);
                 if(it->getAct()==0)crash.play();
                 it++;}
         }
@@ -159,14 +184,28 @@ void Dialog::paintEvent(QPaintEvent *){
         ui->label->setText(QString::number(coins));//金币数
         //+" ; "+QString::number(_x)+" , "+QString::number(_y)
         ui->label_2->setText("  "+QString::number(enemy[0].getLife()));//生命数
-        ui->label_3->setText("第 "+QString::number(wavenum+1)+" / 3 波病毒");//敌人波数
+        ui->label_3->setText(QString::number(wavenum+1));//敌人波数
     }
     //for(int i=0;i<15;i++){painter.drawLine(70*i,0,70*i,700);painter.drawLine(0,70*i,1000,70*i);}
 }
 
 void Dialog::mousePressEvent(QMouseEvent *event){
-    if(gameover){emit sendsignal();this->close();}
+    if(gameover){timer0->stop();emit sendsignal();this->close();}//游戏结束判断
+    //游戏暂停和速度设置
     int x = event->x(),y = event->y();
+    if(x>=170&&x<=220&&y<=60){
+        if(stop==0){timer0->stop();stop=1;}
+        else{
+            if(speed==0)timer0->start(10);
+            else timer0->start(5);
+            stop=0;
+        }
+    }
+    if(x>=450&&x<=545&&y<=60){
+        if(speed==0){timer0->stop();timer0->start(5);speed=1;}
+        else{timer0->stop();timer0->start(10);speed=0;}
+    }
+
     int mx=floor((double)x/70)*70,my=floor((double)y/70)*70;//格点取整操作
     //已建塔的维护
     int judge=1,jud=1;
@@ -180,9 +219,9 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                         levelup.play();
                     }
                 }else if(event->button()==Qt::RightButton){//拆塔，下同
-                    if(it->getLevel()==1)coins+=it->getMoney()*0.8;
-                    else if(it->getLevel()==2)coins+=it->getMoney()*1.0;
-                    else if(it->getLevel()==3)coins+=it->getMoney()*1.1;
+                    if(it->getLevel()==1)coins+=it->getMoney()*0.45;
+                    else if(it->getLevel()==2)coins+=it->getMoney()*0.75;
+                    else if(it->getLevel()==3)coins+=it->getMoney()*0.95;
                     tower.erase(it);
                     del.play();
                 }
@@ -198,9 +237,9 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                         levelup.play();
                     }
                 }else if(event->button()==Qt::RightButton){
-                    if(it->getLevel()==1)coins+=it->getMoney()*0.8;
-                    else if(it->getLevel()==2)coins+=it->getMoney()*1.0;
-                    else if(it->getLevel()==3)coins+=it->getMoney()*1.0;
+                    if(it->getLevel()==1)coins+=it->getMoney()*0.45;
+                    else if(it->getLevel()==2)coins+=it->getMoney()*0.75;
+                    else if(it->getLevel()==3)coins+=it->getMoney()*0.95;
                     tower2.erase(it);
                     del.play();
                 }
@@ -216,9 +255,9 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                         levelup.play();
                     }
                 }else if(event->button()==Qt::RightButton){
-                    if(it->getLevel()==1)coins+=it->getMoney()*0.7;
-                    else if(it->getLevel()==2)coins+=it->getMoney()*0.9;
-                    else if(it->getLevel()==3)coins+=it->getMoney()*0.9;
+                    if(it->getLevel()==1)coins+=it->getMoney()*0.45;
+                    else if(it->getLevel()==2)coins+=it->getMoney()*0.75;
+                    else if(it->getLevel()==3)coins+=it->getMoney()*0.95;
                     tower3.erase(it);
                     del.play();
                 }
@@ -238,7 +277,7 @@ void Dialog::mousePressEvent(QMouseEvent *event){
             }
             for(auto it=stone.begin();it!=stone.end();it++)//判断此处是否有障碍
                 if(mx==it->getCoor().getX()&&my==it->getCoor().getY()){it->setTar();jud=0;break;}
-            if(jud&&my>0&&my<490){p_click.setX(mx);p_click.setY(my);buttonCover=1;}//jud判断是否在敌人的进攻路线上
+            if(jud&&my>0&&my<490){p_click.setX(mx);p_click.setY(my);select.play();buttonCover=1;}//jud判断是否在敌人的进攻路线上
         }
         else{
             int _x=p_click.getX(),_y=p_click.getY();
@@ -273,9 +312,10 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                     }
                 }
             }
-            if(_x!=mx||_y!=my){p_click.setX(-1);p_click.setY(-1);buttonCover=0;}
+            if(_x!=mx||_y!=my){diselect.play();p_click.setX(-1);p_click.setY(-1);buttonCover=0;}
         }
     }
+    if(stop==1)this->repaint();
 }
 
 bool comp(Enemy & e1,Enemy & e2){//排序比较函数
@@ -514,7 +554,8 @@ void Dialog::moveArmy()
 }
 
 void Dialog::reset(){//全部变量重置
-    enemy[0].reset();
+    stop=0;speed=0;timer0->start(10);
+    enemy[0].reset();piclive=enemy[0].getLife();
     enemy.clear();enemy2.clear();enemy3.clear();enemy4.clear();
     tower.clear();tower2.clear();tower3.clear();stone.clear();
     p_click.setX(-1);p_click.setY(-1);
@@ -539,6 +580,7 @@ void Dialog::reset(){//全部变量重置
     ui->label_2->show();
     ui->label_3->show();
     ui->label_4->show();
+    ui->label_5->show();
 }
 
 void Dialog::gameOver(QPainter &painter) {//游戏失败
@@ -546,7 +588,9 @@ void Dialog::gameOver(QPainter &painter) {//游戏失败
     ui->label_2->hide();
     ui->label_3->hide();
     ui->label_4->hide();
+    ui->label_5->hide();
     painter.drawPixmap(rect(), QPixmap("://image/lose.jpg"));
+    if(!gameover)lose.play();
 }
 
 void Dialog::gameWin(QPainter &painter) {//游戏成功
@@ -554,5 +598,23 @@ void Dialog::gameWin(QPainter &painter) {//游戏成功
     ui->label_2->hide();
     ui->label_3->hide();
     ui->label_4->hide();
+    ui->label_5->hide();
     painter.drawPixmap(rect(), QPixmap("://image/win.jpg"));
+    if(!gameover)perfect.play();
+}
+
+void Dialog::keyPressEvent(QKeyEvent *e){//游戏结束，任意键返回主界面;过程中按Esc
+    if(gameover||e->key()==Qt::Key_Escape){timer0->stop();emit sendsignal();this->close();}
+    else if(e->key()==Qt::Key_Space){
+        if(stop==0){timer0->stop();stop=1;}
+        else{
+            if(speed==0)timer0->start(10);
+            else timer0->start(5);
+            stop=0;
+        }
+    }
+    if(stop==1)this->repaint();
+    if(e->key()==Qt::Key_Up||e->key()==Qt::Key_Right){timer0->stop();timer0->start(5);speed=1;}
+    if(e->key()==Qt::Key_Down||e->key()==Qt::Key_Left){timer0->stop();timer0->start(10);speed=0;}
+    if(e->key()==Qt::Key_Backspace)this->reset();
 }

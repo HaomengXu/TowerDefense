@@ -27,6 +27,14 @@
         <file>image/ui.jpg</file>
         <file>image/trash.png</file>
         <file>image/target.png</file>
+        <file>image/attacklung.png</file>
+        <file>image/lung2.png</file>
+        <file>image/lung5.png</file>
+        <file>image/lung8.png</file>
+        <file>image/start.jpg</file>
+        <file>image/stop.jpg</file>
+        <file>image/fast.jpg</file>
+        <file>image/slow.jpg</file>
     </qresource>
     <qresource prefix="/music">
         <file>sound/ToTheRescue.mp3</file>
@@ -43,5 +51,9 @@
         <file>sound/setTower.mp3</file>
         <file>sound/delete.mp3</file>
         <file>sound/trash.mp3</file>
+        <file>sound/Lose.mp3</file>
+        <file>sound/Perfect.mp3</file>
+        <file>sound/TowerDeselect.mp3</file>
+        <file>sound/TowerSelect.mp3</file>
     </qresource>
 </RCC>

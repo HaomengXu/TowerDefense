@@ -20,7 +20,7 @@ public:
         virus=e.virus;
         light=e.light;
     }
-    void show(QPainter &);
+    void show(QPainter &,bool);
 };
 
 #endif // ENEMY4_H

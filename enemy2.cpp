@@ -1,7 +1,7 @@
 #include <QPainter>
 #include "enemy2.h"
 
-void Enemy2::show(QPainter & painter){
+void Enemy2::show(QPainter & painter,bool stop){
     QBrush brush(QColor(255, 255, 255), Qt::Dense1Pattern);
     painter.setPen(QPen(Qt::white,4));
     if(speed<=1||HP<=fullHP/2)virus.load("://image/virus2-1.png");//不同状态下的图片加载
@@ -31,10 +31,10 @@ void Enemy2::show(QPainter & painter){
             if(whichmap==1)painter.translate(map->translate(0).getX()+35,map->translate(0).getY()+25);
             else painter.translate(map2->translate(0).getX()+35,map2->translate(0).getY()+25);
             painter.rotate(timeline*10);
-            painter.setOpacity(1-timeline*0.01);
+            painter.setOpacity(1-abs(timeline-10)*0.02);
             painter.drawImage(-40, -40, light);
             painter.restore();
         }
-        timeline+=speed;
+        if(!stop)timeline+=speed;
     }
 }
