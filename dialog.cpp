@@ -82,15 +82,26 @@ void Dialog::paintEvent(QPaintEvent *){
         else painter.drawPixmap(rect(), QPixmap("://image/map2.jpg"));
         //肺部生命加载图片变化
         if(piclive%100!=enemy[0].getLife()){
-            towerpic.load("://image/attacklung.png");
-            painter.drawImage(677,110, towerpic);
+            if(enemy[0].getMap()==1)towerpic.load("://image/attacklung.png");
+            else towerpic.load("://image/attacklung-2.png");
+            if(enemy[0].getMap()==1)painter.drawImage(677,110, towerpic);
+            else painter.drawImage(677+84,110+297, towerpic);
             piclive+=100;
             if(piclive>3500)piclive=enemy[0].getLife();
         }else{
-            if(enemy[0].getLife()<=8)towerpic.load("://image/lung8.png");
-            if(enemy[0].getLife()<=5)towerpic.load("://image/lung5.png");
-            if(enemy[0].getLife()<=2)towerpic.load("://image/lung2.png");
-            if(enemy[0].getLife()<=8)painter.drawImage(677,110, towerpic);
+            if(enemy[0].getMap()==1){
+                if(enemy[0].getLife()<=8)towerpic.load("://image/lung8.png");
+                if(enemy[0].getLife()<=5)towerpic.load("://image/lung5.png");
+                if(enemy[0].getLife()<=2)towerpic.load("://image/lung2.png");
+            }else{
+                if(enemy[0].getLife()<=8)towerpic.load("://image/lung8-2.png");
+                if(enemy[0].getLife()<=5)towerpic.load("://image/lung5-2.png");
+                if(enemy[0].getLife()<=2)towerpic.load("://image/lung2-2.png");
+            }
+            if(enemy[0].getLife()<=8){
+                if(enemy[0].getMap()==1)painter.drawImage(677,110, towerpic);
+                else painter.drawImage(677+84,110+297, towerpic);
+            }
         }
         if(!stop){time0++;towerpic.load("://image/stop.jpg");}
         else towerpic.load("://image/start.jpg");

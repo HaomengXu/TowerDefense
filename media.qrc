@@ -35,6 +35,10 @@
         <file>image/stop.jpg</file>
         <file>image/fast.jpg</file>
         <file>image/slow.jpg</file>
+        <file>image/attacklung-2.png</file>
+        <file>image/lung2-2.png</file>
+        <file>image/lung5-2.png</file>
+        <file>image/lung8-2.png</file>
     </qresource>
     <qresource prefix="/music">
         <file>sound/ToTheRescue.mp3</file>
