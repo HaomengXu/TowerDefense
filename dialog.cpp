@@ -511,7 +511,7 @@ void Dialog::moveArmy()
             if(a>0){
                 attackjudge=1;
                 if(a==2){
-                    ta->reduceHP(it->getAttack());//发动攻击
+                    ta->reduceHP(it->getAttack());ta->setFire();//发动攻击
                     if(ta->getAct()==0){coins+=ta->getMoney();die4.play();}//杀敌
                 }
             }
@@ -521,7 +521,7 @@ void Dialog::moveArmy()
             if(a>0){
                 attackjudge=1;
                 if(a==2){
-                    ta->reduceHP(it->getAttack());
+                    ta->reduceHP(it->getAttack());ta->setFire();
                     if(ta->getAct()==0){coins+=ta->getMoney();die3.play();}
                 }
             }
@@ -531,7 +531,7 @@ void Dialog::moveArmy()
             if(a>0){
                 attackjudge=1;
                 if(a==2){
-                    ta->reduceHP(it->getAttack());
+                    ta->reduceHP(it->getAttack());ta->setFire();
                     if(ta->getAct()==0){coins+=ta->getMoney();die2.play();}
                 }
             }
@@ -541,9 +541,16 @@ void Dialog::moveArmy()
             if(a>0){
                 attackjudge=1;
                 if(a==2){
-                    ta->reduceHP(it->getAttack());
+                    ta->reduceHP(it->getAttack());ta->setFire();
                     if(ta->getAct()==0){coins+=ta->getMoney();die1.play();}
                 }
+            }
+        }
+        for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()){
+            int a=it->Attack(ta->getCoor());
+            if(a>0){
+                attackjudge=1;
+                break;
             }
         }
         for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()||attackjudge==1){
@@ -551,7 +558,7 @@ void Dialog::moveArmy()
             if(a>0){
                 attackjudge=1;
                 if(a==2){
-                    ta->reduceHP(it->getAttack());
+                    ta->reduceHP(it->getAttack());ta->setFire();
                     if(ta->getAct()==0){coins+=ta->getMoney();trash.play();}
                 }
             }
@@ -624,8 +631,8 @@ void Dialog::keyPressEvent(QKeyEvent *e){//游戏结束，任意键返回主界�
             stop=0;
         }
     }
-    if(stop==1)this->repaint();
     if(e->key()==Qt::Key_Up||e->key()==Qt::Key_Right){timer0->stop();timer0->start(5);speed=1;}
     if(e->key()==Qt::Key_Down||e->key()==Qt::Key_Left){timer0->stop();timer0->start(10);speed=0;}
     if(e->key()==Qt::Key_Backspace)this->reset();
+    if(stop==1){timer0->stop();this->repaint();}
 }

@@ -19,7 +19,6 @@ public :
     void show3(QPainter & painter,const Point &c) const{//子弹3
         double d=dis(c);
         painter.drawEllipse(c.getX()+35-d, c.getY()+35-d, 2*d, 2*d);
-
     }
 
     double dis(const Point &p) const{//距离

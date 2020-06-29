@@ -8,6 +8,14 @@ void Stone::show(QPainter &painter)
     int x=coor.getX(),y=coor.getY();
     if(HP>0){
         painter.drawImage(x+2, y-7, trash);
+        if(fired>0){
+            painter.save();
+            painter.setOpacity((double)fired/200);
+            painter.drawImage(x+3, y+25, fire);
+            painter.restore();
+            if(fired%10==1)HP--;
+            fired--;
+        }
         if(target==1)painter.drawImage(x+15, y+15, tar);//绘制靶心标志
         //绘制血量
         if(HP!=fullHP){

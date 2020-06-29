@@ -16,6 +16,15 @@ void Enemy::show(QPainter & painter,bool stop){
     //绘制敌人
     if(HP>0){
         painter.drawImage(x, y, virus);
+        if(slowice)painter.drawImage(x, y+35, ice);
+        else if(fired>0){
+            painter.save();
+            painter.setOpacity((double)fired*(double)fired/200/200);
+            painter.drawImage(x+3, y+25, fire);
+            painter.restore();
+            if(fullHP==500&&fired%5==1)HP--;
+            fired--;
+        }
         coor.setX(x);coor.setY(y);
         //绘制血量
         brush.setColor(Qt::darkGreen);

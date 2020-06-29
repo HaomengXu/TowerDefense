@@ -39,6 +39,8 @@
         <file>image/lung2-2.png</file>
         <file>image/lung5-2.png</file>
         <file>image/lung8-2.png</file>
+        <file>image/ice.png</file>
+        <file>image/fire.png</file>
     </qresource>
     <qresource prefix="/music">
         <file>sound/ToTheRescue.mp3</file>
