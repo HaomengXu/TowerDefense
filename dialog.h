@@ -64,8 +64,8 @@ private:
 
     int time0=0;//主时间线
     int coins=500;//金币数
-    QMediaPlayer appear,attack1,attack2,attack3,die1,die2,die3,die4,
-        setow,levelup,del,crash,trash,perfect,lose,select,diselect;//音效
+    QMediaPlayer attack[3],die[4],appear,setow,levelup,
+                del,crash,trash,perfect,lose,select,diselect;//音效
 
     int wavenum=0;//第几波r敌人
     Map map;//地图1

@@ -5,11 +5,8 @@
 #include "enemy.h"
 class Enemy4:public Enemy{
 public:
-    Enemy4(){fullHP=HP=2500;speed=1;slowice=0;fired=0;money=80;
-             virus.load("://image/virus4.png");light.load("://image/Light.png");
-                  ice.load("://image/ice.png");fire.load("://image/fire.png");
-             if(whichmap==1){coor.setX(70);coor.setY(140);}
-             else{coor.setX(0);coor.setY(280);}
+    Enemy4(){fullHP=HP=2500;speed=1;money=80;picLoad();
+             virus.load("://image/virus4.png");
             }
     ~Enemy4(){}
     Enemy4(const Enemy4 &e){
@@ -21,7 +18,7 @@ public:
         virus=e.virus;
         light=e.light;
         ice=e.ice;fire=e.fire;
-        fired=e.fired;
+        fired=e.fired;dietime=e.dietime;
     }
     void show(QPainter &,bool);
 };

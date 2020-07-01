@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>image/map.jpg</file>
+        <file>image/map1.jpg</file>
         <file>image/virus1.png</file>
         <file>image/injection.png</file>
         <file>image/life.png</file>
@@ -27,39 +27,44 @@
         <file>image/ui.jpg</file>
         <file>image/trash.png</file>
         <file>image/target.png</file>
-        <file>image/attacklung.png</file>
-        <file>image/lung2.png</file>
-        <file>image/lung5.png</file>
-        <file>image/lung8.png</file>
+        <file>image/attacklung1.png</file>
+        <file>image/lung1-1.png</file>
+        <file>image/lung2-1.png</file>
+        <file>image/lung3-1.png</file>
         <file>image/start.jpg</file>
         <file>image/stop.jpg</file>
         <file>image/fast.jpg</file>
         <file>image/slow.jpg</file>
-        <file>image/attacklung-2.png</file>
+        <file>image/attacklung2.png</file>
+        <file>image/lung1-2.png</file>
         <file>image/lung2-2.png</file>
-        <file>image/lung5-2.png</file>
-        <file>image/lung8-2.png</file>
+        <file>image/lung3-2.png</file>
         <file>image/ice.png</file>
         <file>image/fire.png</file>
-    </qresource>
-    <qresource prefix="/music">
-        <file>sound/ToTheRescue.mp3</file>
+        <file>image/die1.png</file>
+        <file>image/die2.png</file>
+        <file>image/die3.png</file>
+        <file>image/die4.png</file>
+        <file>image/die5.png</file>
+        <file>image/die6.png</file>
+        <file>image/die7.png</file>
         <file>sound/appear.mp3</file>
         <file>sound/attack1.mp3</file>
         <file>sound/attack2.mp3</file>
         <file>sound/attack3.mp3</file>
         <file>sound/Crash.mp3</file>
+        <file>sound/delete.mp3</file>
         <file>sound/die1.mp3</file>
         <file>sound/die2.mp3</file>
         <file>sound/die3.mp3</file>
         <file>sound/die4.mp3</file>
         <file>sound/levelUP.mp3</file>
-        <file>sound/setTower.mp3</file>
-        <file>sound/delete.mp3</file>
-        <file>sound/trash.mp3</file>
         <file>sound/Lose.mp3</file>
         <file>sound/Perfect.mp3</file>
+        <file>sound/setTower.mp3</file>
+        <file>sound/ToTheRescue.mp3</file>
         <file>sound/TowerDeselect.mp3</file>
         <file>sound/TowerSelect.mp3</file>
+        <file>sound/trash.mp3</file>
     </qresource>
 </RCC>

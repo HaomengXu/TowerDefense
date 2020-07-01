@@ -5,14 +5,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    QMediaPlayer * player = new QMediaPlayer;//全局音乐加载
+    player->setMedia(QUrl("qrc:/sound/ToTheRescue.mp3"));
+    player->setVolume(10);
+    player->play();
+
     ui->setupUi(this);
     this->setFixedSize(this->width(),this->height());//窗格大小锁定
     connect(d,SIGNAL(sendsignal()),this,SLOT(reshow()));//信号与重新显示函数连接槽
     d->setWindowTitle("TowerDefence - Resistance to disease");//标题栏
-    QMediaPlayer * player = new QMediaPlayer;//全局音乐加载
-    player->setMedia(QUrl("qrc:/music/sound/ToTheRescue.mp3"));
-    player->setVolume(10);
-    player->play();
 }
 
 MainWindow::~MainWindow()

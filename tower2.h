@@ -4,7 +4,7 @@
 #include "tower.h"
 class Tower2:public Tower{
 public:
-    Tower2(){range=120-60;attack=40-25;money=120;interval=40+10;}
+    Tower2(){range=130-60;attack=40-25;money=120;interval=40+10;}
     ~Tower2(){}
     Tower2(const Tower2& t){
         level=t.level;

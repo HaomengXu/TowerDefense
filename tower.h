@@ -33,7 +33,7 @@ protected:
     int level=0;
     int money=100;
 
-    int range=150-60;
+    int range=140-60;
     int attack=60-20;
 
     int timerID=5;//时间线

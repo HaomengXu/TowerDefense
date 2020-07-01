@@ -12,17 +12,17 @@ void Enemy::show(QPainter & painter,bool stop){
     if(whichmap==1)p=map->translate(d);//行进距离转换为坐标
     else p=map2->translate(d);
     int x=p.getX(),y=p.getY();
-    if(x<0){if(HP>0)life--;HP=0;}//敌人侵犯成功
+    if(x<0){if(HP>0)life--;HP=0;dietime=70;}//敌人侵犯成功
     //绘制敌人
     if(HP>0){
         painter.drawImage(x, y, virus);
-        if(slowice)painter.drawImage(x, y+35, ice);
+        if(slowice){painter.drawImage(x, y+35, ice);fired=0;}
         else if(fired>0){
             painter.save();
-            painter.setOpacity((double)fired*(double)fired/200/200);
+            painter.setOpacity((double)fired*(double)fired/400/400);
             painter.drawImage(x+3, y+25, fire);
             painter.restore();
-            if(fullHP==500&&fired%5==1)HP--;
+            if(fullHP==500&&fired%10==1)HP--;
             fired--;
         }
         coor.setX(x);coor.setY(y);
@@ -44,5 +44,14 @@ void Enemy::show(QPainter & painter,bool stop){
             painter.restore();
         }
         if(!stop)timeline+=speed;
+    }else if(x>0){//死亡模式，演示动画
+        die.load("://image/die"+QString::number(dietime/10)+".png");//顺序加载动图
+        painter.save();
+        painter.setOpacity(1.0-(double)dietime/70);//淡出效果
+        painter.drawImage(x,y, virus);
+        painter.setOpacity(1.0-(double)dietime/140);
+        painter.drawImage(x-30,y-20, die);
+        painter.restore();
+        if(stop==0)dietime+=2;
     }
 }

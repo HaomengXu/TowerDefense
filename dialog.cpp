@@ -11,58 +11,41 @@ Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Dialog)
 {
-    ui->setupUi(this);
-    this->setFixedSize(this->width(),this->height());//窗格大小锁定
     //全部音效加载
     appear.setVolume(30);
-    appear.setMedia(QUrl("qrc:/music/sound/appear.mp3"));
+    appear.setMedia(QUrl("qrc:/sound/appear.mp3"));
     setow.setVolume(30);
-    setow.setMedia(QUrl("qrc:/music/sound/setTower.mp3"));
+    setow.setMedia(QUrl("qrc:/sound/setTower.mp3"));
     levelup.setVolume(30);
-    levelup.setMedia(QUrl("qrc:/music/sound/levelUP.mp3"));
+    levelup.setMedia(QUrl("qrc:/sound/levelUP.mp3"));
     del.setVolume(30);
-    del.setMedia(QUrl("qrc:/music/sound/delete.mp3"));
-    attack1.setVolume(30);
-    attack1.setMedia(QUrl("qrc:/music/sound/attack1.mp3"));
-    attack2.setVolume(30);
-    attack2.setMedia(QUrl("qrc:/music/sound/attack2.mp3"));
-    attack3.setVolume(30);
-    attack3.setMedia(QUrl("qrc:/music/sound/attack3.mp3"));
-    die1.setVolume(20);
-    die1.setMedia(QUrl("qrc:/music/sound/die1.mp3"));
-    die2.setVolume(20);
-    die2.setMedia(QUrl("qrc:/music/sound/die2.mp3"));
-    die3.setVolume(20);
-    die3.setMedia(QUrl("qrc:/music/sound/die3.mp3"));
-    die4.setVolume(20);
-    die4.setMedia(QUrl("qrc:/music/sound/die4.mp3"));
+    del.setMedia(QUrl("qrc:/sound/delete.mp3"));
+    for(int i=0;i<3;i++){
+        attack[i].setVolume(30);
+        attack[i].setMedia(QUrl("qrc:/sound/attack"+QString::number(i+1)+".mp3"));
+    }
+    for(int i=0;i<4;i++){
+        die[i].setVolume(20);
+        die[i].setMedia(QUrl("qrc:/sound/die"+QString::number(i+1)+".mp3"));
+    }
     crash.setVolume(50);
-    crash.setMedia(QUrl("qrc:/music/sound/Crash.mp3"));
+    crash.setMedia(QUrl("qrc:/sound/Crash.mp3"));
     trash.setVolume(40);
-    trash.setMedia(QUrl("qrc:/music/sound/trash.mp3"));
+    trash.setMedia(QUrl("qrc:/sound/trash.mp3"));
     perfect.setVolume(40);
-    perfect.setMedia(QUrl("qrc:/music/sound/Perfect.mp3"));
+    perfect.setMedia(QUrl("qrc:/sound/Perfect.mp3"));
     lose.setVolume(40);
-    lose.setMedia(QUrl("qrc:/music/sound/Lose.mp3"));
+    lose.setMedia(QUrl("qrc:/sound/Lose.mp3"));
     select.setVolume(40);
-    select.setMedia(QUrl("qrc:/music/sound/TowerSelect.mp3"));
+    select.setMedia(QUrl("qrc:/sound/TowerSelect.mp3"));
     diselect.setVolume(40);
-    diselect.setMedia(QUrl("qrc:/music/sound/TowerDeselect.mp3"));
-    //新建一批障碍物
-    Point p(140,280);
-    Stone s1(p);stone.push_back(s1);
-    p.setX(280);p.setY(210);
-    Stone s2(p);stone.push_back(s2);
-    p.setX(490);p.setY(210);
-    Stone s3(p);stone.push_back(s3);
-    p.setX(630);p.setY(280);
-    Stone s4(p);stone.push_back(s4);
-    p.setX(350);p.setY(350);
-    Stone s5(p);stone.push_back(s5);
+    diselect.setMedia(QUrl("qrc:/sound/TowerDeselect.mp3"));
 
     timer0 = new QTimer(this);
     connect(timer0,SIGNAL(timeout()),this,SLOT(moveArmy()));//全局时间槽
-    timer0->start(10);//10ms
+
+    ui->setupUi(this);
+    this->setFixedSize(this->width(),this->height());//窗格大小锁定
 }
 
 Dialog::~Dialog()
@@ -72,75 +55,79 @@ Dialog::~Dialog()
 }
 
 void Dialog::paintEvent(QPaintEvent *){
+    int _life=enemy[0].getLife(),_map=enemy[0].getMap();
     QPainter painter(this);
     QBrush brush(QColor(255, 255, 255), Qt::Dense2Pattern);
 
-    if(enemy[0].getLife()<=0){gameOver(painter);gameover=1;}//失败
-    else if(enemy[0].getMap()==2&&wavenum==3){gameWin(painter);gameover=1;}//赢
+    if(_life<=0){gameOver(painter);gameover=1;}//失败
+    else if(_map==2&&wavenum==3){gameWin(painter);gameover=1;}//赢
     else{
-        if(enemy[0].getMap()==1)painter.drawPixmap(rect(), QPixmap("://image/map.jpg"));
-        else painter.drawPixmap(rect(), QPixmap("://image/map2.jpg"));
+        painter.drawPixmap(rect(), QPixmap("://image/map"+QString::number(_map)+".jpg"));
         //肺部生命加载图片变化
-        if(piclive%100!=enemy[0].getLife()){
-            if(enemy[0].getMap()==1)towerpic.load("://image/attacklung.png");
-            else towerpic.load("://image/attacklung-2.png");
-            if(enemy[0].getMap()==1)painter.drawImage(677,110, towerpic);
-            else painter.drawImage(677+84,110+297, towerpic);
+        if(piclive%100!=_life){
+            towerpic.load("://image/attacklung"+QString::number(_map)+".png");
+            painter.drawImage(593+84*_map,-187+297*_map, towerpic);
             piclive+=100;
-            if(piclive>3500)piclive=enemy[0].getLife();
+            if(piclive>3500)piclive=_life;
         }else{
-            if(enemy[0].getMap()==1){
-                if(enemy[0].getLife()<=8)towerpic.load("://image/lung8.png");
-                if(enemy[0].getLife()<=5)towerpic.load("://image/lung5.png");
-                if(enemy[0].getLife()<=2)towerpic.load("://image/lung2.png");
-            }else{
-                if(enemy[0].getLife()<=8)towerpic.load("://image/lung8-2.png");
-                if(enemy[0].getLife()<=5)towerpic.load("://image/lung5-2.png");
-                if(enemy[0].getLife()<=2)towerpic.load("://image/lung2-2.png");
-            }
-            if(enemy[0].getLife()<=8){
-                if(enemy[0].getMap()==1)painter.drawImage(677,110, towerpic);
-                else painter.drawImage(677+84,110+297, towerpic);
+            if(_life<=8){
+                towerpic.load("://image/lung"+QString::number((_life+1)/3)
+                              +"-"+QString::number(_map)+".png");
+                painter.drawImage(593+84*_map,-187+297*_map, towerpic);
             }
         }
+        //暂停和倍速
         if(!stop){time0++;towerpic.load("://image/stop.jpg");}
         else towerpic.load("://image/start.jpg");
         painter.drawImage(170,5, towerpic);
         if(!speed){towerpic.load("://image/slow.jpg");}
         else towerpic.load("://image/fast.jpg");
         painter.drawImage(450,3, towerpic);
-        //敌人和塔
+        //敌人和障碍物
         painter.setPen(QPen(Qt::white,4));
         for(auto it=stone.begin();it!=stone.end();){
-            if(it->getAct()==0){stone.erase(it);}
+            if(it->getAct()==0)stone.erase(it);
             else {it->show(painter);
                 if(it->getAct()==0)trash.play();
                 it++;}
         }
         for(auto it=enemy.begin();it!=enemy.end();){
-            if(it->getAct()==0){enemy.erase(it);virusnum[0]--;time0-=50;}//得逞的敌人清除
-            else {it->show(painter,stop);//敌人显示
-                if(it->getAct()==0)crash.play();//掉命预警
-                it++;}
+            bool jud=it->getAct();
+            it->show(painter,stop);//敌人显示
+            if(it->startDie())die[0].play();//敌人死亡音效
+            if(it->getDie()==1){
+                if(jud)crash.play();//掉命预警
+                enemy.erase(it);virusnum[0]--;time0-=50;//敌人清除
+            }else it++;
         }
         for(auto it=enemy2.begin();it!=enemy2.end();){
-            if(it->getAct()==0){enemy2.erase(it);virusnum[1]--;time0-=100;}
-            else {it->show(painter,stop);
-                if(it->getAct()==0)crash.play();
-                it++;}
+            bool jud=it->getAct();
+            it->show(painter,stop);
+            if(it->startDie())die[1].play();
+            if(it->getDie()==1){
+                if(jud)crash.play();
+                enemy2.erase(it);virusnum[1]--;time0-=100;
+            }else it++;
         }
         for(auto it=enemy3.begin();it!=enemy3.end();){
-            if(it->getAct()==0){enemy3.erase(it);virusnum[2]--;time0-=150;}
-            else {it->show(painter,stop);
-                if(it->getAct()==0)crash.play();
-                it++;}
+            bool jud=it->getAct();
+            it->show(painter,stop);
+            if(it->startDie())die[2].play();
+            if(it->getDie()==1){
+                if(jud)crash.play();
+                enemy3.erase(it);virusnum[2]--;time0-=150;
+            }else it++;
         }
         for(auto it=enemy4.begin();it!=enemy4.end();){
-            if(it->getAct()==0){enemy4.erase(it);virusnum[3]--;time0-=250;}
-            else {it->show(painter,stop);
-                if(it->getAct()==0)crash.play();
-                it++;}
+            bool jud=it->getAct();
+            it->show(painter,stop);
+            if(it->startDie())die[3].play();
+            if(it->getDie()==1){
+                if(jud)crash.play();
+                enemy4.erase(it);virusnum[3]--;time0-=250;
+            }else it++;
         }
+        //塔
         if(time0%30<15)towerpic.load("://image/LevelUp.png");//提示升级图片加载
         else towerpic.load("://image/LevelUp2.png");
         for(auto it=tower2.begin();it!=tower2.end();++it){
@@ -194,7 +181,7 @@ void Dialog::paintEvent(QPaintEvent *){
         if(_x>0){painter.drawEllipse(_x-5,_y-5,10,10);}*/
         ui->label->setText(QString::number(coins));//金币数
         //+" ; "+QString::number(_x)+" , "+QString::number(_y)
-        ui->label_2->setText("  "+QString::number(enemy[0].getLife()));//生命数
+        ui->label_2->setText("  "+QString::number(_life));//生命数
         ui->label_3->setText(QString::number(wavenum+1));//敌人波数
     }
     //for(int i=0;i<15;i++){painter.drawLine(70*i,0,70*i,700);painter.drawLine(0,70*i,1000,70*i);}
@@ -330,7 +317,7 @@ void Dialog::mousePressEvent(QMouseEvent *event){
 }
 
 bool comp(Enemy & e1,Enemy & e2){//排序比较函数
-    return e1.getTime()>e2.getTime();
+    return e1.getTime()>e2.getTime()+10;
 }
 
 void Dialog::moveArmy()
@@ -401,7 +388,7 @@ void Dialog::moveArmy()
         bool attacked=0;
         for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()){//当障碍物为目标时
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack1.play();
+            if(a==1)attack[0].play();
             else if(a==3){
                 ta->reduceHP(it->getAttack());
                 if(ta->getAct()==0){coins+=ta->getMoney();trash.play();}
@@ -409,39 +396,39 @@ void Dialog::moveArmy()
             if(a!=0){attacked=1;break;}
         }
         if(!attacked&&enemy2.begin()->getTime()>=enemy.begin()->getTime()-150)//确定先攻击哪种敌人
-          for(auto ta=enemy2.begin();ta!=enemy2.end();++ta){//遍历敌人2，下同
+          for(auto ta=enemy2.begin();ta!=enemy2.end();++ta)if(ta->getAct()){//遍历敌人2，下同；判断是否死亡模式
             int a=it->Attack(ta->getCoor());//攻击状态确认
-            if(a==1)attack1.play();
+            if(a==1)attack[0].play();//攻击音效
             else if(a==3){
                 ta->reduceHP(it->getAttack());//敌人减血
-                if(ta->getAct()==0){coins+=ta->getMoney();die2.play();}//杀敌奖励金币
+                if(ta->getAct()==0){coins+=ta->getMoney();}//杀敌奖励金币
             }
             if(a!=0){attacked=1;break;}//确认攻击对象后弹出
         }
-        if(!attacked)for(auto ta=enemy.begin();ta!=enemy.end();++ta){
+        if(!attacked)for(auto ta=enemy.begin();ta!=enemy.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack1.play();
+            if(a==1)attack[0].play();
             else if(a==3){
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die1.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
         }
-        if(!attacked)for(auto ta=enemy3.begin();ta!=enemy3.end();++ta){
+        if(!attacked)for(auto ta=enemy3.begin();ta!=enemy3.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack1.play();
+            if(a==1)attack[0].play();
             else if(a==3){
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die3.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
         }
-        if(!attacked)for(auto ta=enemy4.begin();ta!=enemy4.end();++ta){
+        if(!attacked)for(auto ta=enemy4.begin();ta!=enemy4.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack1.play();
+            if(a==1)attack[0].play();
             else if(a==3){
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die4.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
         }
@@ -451,53 +438,53 @@ void Dialog::moveArmy()
         bool attacked=0;
         for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack1.play();
+            if(a==1)attack[0].play();
             else if(a==3){
                 ta->reduceHP(it->getAttack());
                 if(ta->getAct()==0){coins+=ta->getMoney();trash.play();}
             }
             if(a!=0){attacked=1;break;}
         }
-        if(!attacked)for(auto ta=enemy2.begin();ta!=enemy2.end();++ta){
+        if(!attacked)for(auto ta=enemy2.begin();ta!=enemy2.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack2.play();
+            if(a==1)attack[1].play();
             else if(a==3){
                 ta->slowSpeed(it->getLevel());//减速算法
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die2.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
             else if(it->reSpeedjud(ta->getCoor())==1)ta->reSpeed();//敌人出攻击圈时速度恢复
         }
-        if(!attacked)for(auto ta=enemy3.begin();ta!=enemy3.end();++ta){
+        if(!attacked)for(auto ta=enemy3.begin();ta!=enemy3.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack2.play();
+            if(a==1)attack[1].play();
             else if(a==3){
                 ta->slowSpeed(it->getLevel());
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die3.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
             else if(it->reSpeedjud(ta->getCoor())==1)ta->reSpeed();
         }
-        if(!attacked)for(auto ta=enemy.begin();ta!=enemy.end();++ta){
+        if(!attacked)for(auto ta=enemy.begin();ta!=enemy.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack2.play();
+            if(a==1)attack[1].play();
             else if(a==3){
                 ta->slowSpeed(it->getLevel());
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die1.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
             else if(it->reSpeedjud(ta->getCoor())==1)ta->reSpeed();
         }
-        if(!attacked)for(auto ta=enemy4.begin();ta!=enemy4.end();++ta){
+        if(!attacked)for(auto ta=enemy4.begin();ta!=enemy4.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
-            if(a==1)attack2.play();
+            if(a==1)attack[1].play();
             else if(a==3){
                 ta->slowSpeed(it->getLevel());
                 ta->reduceHP(it->getAttack());
-                if(ta->getAct()==0){coins+=ta->getMoney();die4.play();}
+                if(ta->getAct()==0){coins+=ta->getMoney();}
             }
             if(a!=0){attacked=1;break;}
             else if(it->reSpeedjud(ta->getCoor())==1)ta->reSpeed();
@@ -506,66 +493,63 @@ void Dialog::moveArmy()
     }
     for(auto it=tower3.begin();it!=tower3.end();++it){
         bool attackjudge=0;//攻击状态
-        for(auto ta=enemy4.begin();ta!=enemy4.end();++ta){
+        for(auto ta=enemy4.begin();ta!=enemy4.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());//攻击状态确认函数
             if(a>0){
                 attackjudge=1;
                 if(a==2){
                     ta->reduceHP(it->getAttack());ta->setFire();//发动攻击
-                    if(ta->getAct()==0){coins+=ta->getMoney();die4.play();}//杀敌
+                    if(ta->getAct()==0){coins+=ta->getMoney();}//杀敌
                 }
             }
         }
-        for(auto ta=enemy3.begin();ta!=enemy3.end();++ta){
+        for(auto ta=enemy3.begin();ta!=enemy3.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
             if(a>0){
                 attackjudge=1;
                 if(a==2){
                     ta->reduceHP(it->getAttack());ta->setFire();
-                    if(ta->getAct()==0){coins+=ta->getMoney();die3.play();}
+                    if(ta->getAct()==0){coins+=ta->getMoney();}
                 }
             }
         }
-        for(auto ta=enemy2.begin();ta!=enemy2.end();++ta){
+        for(auto ta=enemy2.begin();ta!=enemy2.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
             if(a>0){
                 attackjudge=1;
                 if(a==2){
                     ta->reduceHP(it->getAttack());ta->setFire();
-                    if(ta->getAct()==0){coins+=ta->getMoney();die2.play();}
+                    if(ta->getAct()==0){coins+=ta->getMoney();}
                 }
             }
         }
-        for(auto ta=enemy.begin();ta!=enemy.end();++ta){
+        for(auto ta=enemy.begin();ta!=enemy.end();++ta)if(ta->getAct()){
             int a=it->Attack(ta->getCoor());
             if(a>0){
                 attackjudge=1;
                 if(a==2){
                     ta->reduceHP(it->getAttack());ta->setFire();
-                    if(ta->getAct()==0){coins+=ta->getMoney();die1.play();}
+                    if(ta->getAct()==0){coins+=ta->getMoney();}
                 }
             }
         }
-        for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()){
+        for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()){//遍历障碍物看有没有被攻击，实现群体伤害
             int a=it->Attack(ta->getCoor());
             if(a>0){
                 attackjudge=1;
                 break;
             }
         }
-        for(auto ta=stone.begin();ta!=stone.end();++ta)if(ta->getTar()||attackjudge==1){
+        if(attackjudge==1)for(auto ta=stone.begin();ta!=stone.end();++ta){
             int a=it->Attack(ta->getCoor());
-            if(a>0){
-                attackjudge=1;
-                if(a==2){
-                    ta->reduceHP(it->getAttack());ta->setFire();
-                    if(ta->getAct()==0){coins+=ta->getMoney();trash.play();}
-                }
+            if(a==2){
+                ta->reduceHP(it->getAttack());ta->setFire();
+                if(ta->getAct()==0){coins+=ta->getMoney();trash.play();}
             }
         }
         if(attackjudge){//处在某一区域内敌人的群体伤害
             int a=it->Attack();//攻击效果判断
-            if(a==1)attack3.play();
+            if(a==1)attack[2].play();
         }else it->resetPoint();//子弹重置
     }
     this->repaint();

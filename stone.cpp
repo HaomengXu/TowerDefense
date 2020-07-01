@@ -11,7 +11,7 @@ void Stone::show(QPainter &painter)
         if(fired>0){
             painter.save();
             painter.setOpacity((double)fired/200);
-            painter.drawImage(x+3, y+25, fire);
+            painter.drawImage(x+5, y+25, fire);
             painter.restore();
             if(fired%10==1)HP--;
             fired--;
