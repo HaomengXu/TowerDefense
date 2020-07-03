@@ -12,10 +12,14 @@ Dialog::Dialog(QWidget *parent)
     , ui(new Ui::Dialog)
 {
     //全部音效加载
-    appear.setVolume(30);
-    appear.setMedia(QUrl("qrc:/sound/appear.mp3"));
+    select.setVolume(40);
+    select.setMedia(QUrl("qrc:/sound/TowerSelect.mp3"));
+    diselect.setVolume(40);
+    diselect.setMedia(QUrl("qrc:/sound/TowerDeselect.mp3"));
     setow.setVolume(30);
     setow.setMedia(QUrl("qrc:/sound/setTower.mp3"));
+    appear.setVolume(30);
+    appear.setMedia(QUrl("qrc:/sound/appear.mp3"));
     levelup.setVolume(30);
     levelup.setMedia(QUrl("qrc:/sound/levelUP.mp3"));
     del.setVolume(30);
@@ -36,10 +40,6 @@ Dialog::Dialog(QWidget *parent)
     perfect.setMedia(QUrl("qrc:/sound/Perfect.mp3"));
     lose.setVolume(40);
     lose.setMedia(QUrl("qrc:/sound/Lose.mp3"));
-    select.setVolume(40);
-    select.setMedia(QUrl("qrc:/sound/TowerSelect.mp3"));
-    diselect.setVolume(40);
-    diselect.setMedia(QUrl("qrc:/sound/TowerDeselect.mp3"));
 
     timer0 = new QTimer(this);
     connect(timer0,SIGNAL(timeout()),this,SLOT(moveArmy()));//全局时间槽
@@ -71,7 +71,7 @@ void Dialog::paintEvent(QPaintEvent *){
             if(piclive>3500)piclive=_life;
         }else{
             if(_life<=8){
-                towerpic.load("://image/lung"+QString::number((_life+1)/3)
+                towerpic.load("://image/lung"+QString::number(_life/3+1)
                               +"-"+QString::number(_map)+".png");
                 painter.drawImage(593+84*_map,-187+297*_map, towerpic);
             }
@@ -279,6 +279,7 @@ void Dialog::mousePressEvent(QMouseEvent *event){
         }
         else{
             int _x=p_click.getX(),_y=p_click.getY();
+            bool set=0;
             if(_y+70==my){
                 if((_x>0&&_x<770&&_x-70==mx)||(_x==0&&_x==mx)||(_x==770&&_x-140==mx)){
                     if(coins>=100){
@@ -287,7 +288,7 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                         coins-=t.getMoney();
                         t.LevelUp();//上一行先扣钱，再初始化为1级
                         tower.push_back(t);
-                        setow.play();
+                        setow.play();set=1;
                     }
                 }else if((_x>0&&_x<770&&_x==mx)||(_x==0&&_x+70==mx)||(_x==770&&_x-70==mx)){
                     if(coins>=120){
@@ -296,7 +297,7 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                         coins-=t2.getMoney();
                         t2.LevelUp();
                         tower2.push_back(t2);
-                        setow.play();
+                        setow.play();set=1;
                     }
                 }
                 else if((_x>0&&_x<770&&_x+70==mx)||(_x==0&&_x+140==mx)||(_x==770&&_x==mx)){
@@ -306,11 +307,12 @@ void Dialog::mousePressEvent(QMouseEvent *event){
                         coins-=t3.getMoney();
                         t3.LevelUp();
                         tower3.push_back(t3);
-                        setow.play();
+                        setow.play();set=1;
                     }
                 }
             }
-            if(_x!=mx||_y!=my){diselect.play();p_click.setX(-1);p_click.setY(-1);buttonCover=0;}
+            if(_x!=mx||_y!=my){if(set==0)diselect.play();
+                p_click.setX(-1);p_click.setY(-1);buttonCover=0;}
         }
     }
     if(stop==1)this->repaint();

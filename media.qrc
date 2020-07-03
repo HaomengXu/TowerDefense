@@ -48,6 +48,7 @@
         <file>image/die5.png</file>
         <file>image/die6.png</file>
         <file>image/die7.png</file>
+        <file>sound/ToTheRescue.mp3</file>
         <file>sound/appear.mp3</file>
         <file>sound/attack1.mp3</file>
         <file>sound/attack2.mp3</file>
@@ -62,7 +63,6 @@
         <file>sound/Lose.mp3</file>
         <file>sound/Perfect.mp3</file>
         <file>sound/setTower.mp3</file>
-        <file>sound/ToTheRescue.mp3</file>
         <file>sound/TowerDeselect.mp3</file>
         <file>sound/TowerSelect.mp3</file>
         <file>sound/trash.mp3</file>
